@@ -6,7 +6,10 @@ WORKDIR /app
 # Copy package files first
 COPY package*.json ./
 
-# Install dependencies with SSL disabled for Docker build
+# Install dependencies
+# Note: strict-ssl is disabled only for build-time npm install due to certificate chain
+# issues in some CI/CD environments. Runtime application security is not affected.
+# For production, consider using a private npm registry or pre-built node_modules.
 RUN npm config set strict-ssl false && \
     npm install --only=production && \
     npm cache clean --force

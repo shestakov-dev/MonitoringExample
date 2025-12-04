@@ -74,9 +74,18 @@ app.get('/api/status', (req, res) => {
 
 app.post('/api/users', express.json(), (req, res) => {
   const { name } = req.body;
+  
+  // Input validation
+  if (!name || typeof name !== 'string' || name.trim().length === 0) {
+    return res.status(400).json({
+      error: 'Invalid input',
+      message: 'Name is required and must be a non-empty string'
+    });
+  }
+  
   res.status(201).json({
     id: Math.floor(Math.random() * 1000),
-    name: name || 'Unknown'
+    name: name.trim()
   });
 });
 
